@@ -1,48 +1,74 @@
-(deftemplate CondicionMedica
-    (slot id (type INTEGER))
-    (slot nombre (type SYMBOL))
-    (multislot signos (type SYMBOL) (allowed-symbols dolor fiebre tos cansancio))
-    (multislot sintomas (type SYMBOL) (allowed-symbols dolor_de_cabeza nauseas escalofrios))
+(assert(enfermedad diabetes))
+(assert(enfermedad anemia))
+(assert(enfermedad hipertension))
+(assert(enfermedad osteoporosis))
+(assert(enfermedad Alzheimer))
+(assert(enfermedad depresion))
+
+(facts)
+
+f-1     (enfermedad diabetes)
+f-2     (enfermedad anemia)
+f-3     (enfermedad hipertension)
+f-4     (enfermedad osteoporosis)
+f-5     (enfermedad Alzheimer)
+f-6     (enfermedad depresion)
+For a total of 6 facts.
+
+(defrule enfermedades(enfermedad ?e) => (printout t ?e crlf))
+
+CLIPS> (run)
+
+depresion
+Alzheimer
+osteoporosis
+hipertension
+anemia
+diabetes
+
+(deftemplate signos-sintomas
+  (slot enfermedad)
+  (multislot signos)
+  (multislot sintomas)
 )
 
-(deffacts BaseConocimientos
-    (CondicionMedica (id 1) (nombre gripe) (signos fiebre cansancio) (sintomas dolor_de_cabeza tos))
-    (CondicionMedica (id 2) (nombre influenza) (signos congestion nauseas) (sintomas escalofrios dolor_muscular))
-    (CondicionMedica (id 3) (nombre diabetes) (signos cicatrizacion_deficiente polifagia) (sintomas polidipsia poliuria))
-    (CondicionMedica (id 4) (nombre alergia) (signos erupcion hinchazon) (sintomas dificultad_respirar picazon))
-    (CondicionMedica (id 5) (nombre intoxicacion_alimentaria) (signos fiebre inflamacion_abdominal) (sintomas nauseas dolor_estomacal))
-    (CondicionMedica (id 6) (nombre asma) (signos silibancias tos) (sintomas opresion_pecho dificultad_respirar))
-)
+ (assert (signos-sintomas (enfermedad "diabetes") 
+                          (signos "sed excesiva" "visión borrosa") 
+                          (sintomas "aumento_orina" "fatiga")))
 
-(defrule ConsultarCondicionMedica
-    =>
-    (printout t "Por favor, ingrese el ID de la condición médica que desea consultar: ")
-    (bind ?id (read))
-    (CondicionMedica (id ?id) (nombre ?nombre) (signos $?signos) (sintomas $?sintomas))
-    =>
-    (printout t "------------------------------------" crlf)
-    (printout t "Condición médica encontrada: " ?nombre " (ID: " ?id ")" crlf)
-    (printout t "------------------------------------" crlf)
-    (printout t "Signos: " ?signos crlf)
-    (printout t "Síntomas: " ?sintomas crlf)
-    (printout t "------------------------------------" crlf)
-)
-
-(defrule EliminarCondicionMedica
-    =>
-    (printout t "Por favor, ingrese el ID de la condición médica que desea eliminar: ")
-    (bind ?id (read))
-    (CondicionMedica (id ?id))
-    =>
-    (printout t "Eliminando condición médica con ID: " ?id crlf)
-    (retract (CondicionMedica (id ?id)))
-)
-
-(defrule ConsultarCondicionMedicaPorNombre
-    =>
-    (printout t "Por favor, ingrese el nombre de la condición médica que desea consultar: ")
-    (bind ?nombre (read))
-    (CondicionMedica (nombre ?nombre))
-    =>
-    (printout t "Condición médica encontrada por nombre: " ?nombre crlf)
-)
+<Fact-8>
+CLIPS> (assert (signos-sintomas (enfermedad "anemia") 
+                          (signos "debilidad" "palidez") 
+                          (sintomas "fatiga" "mareo")))
+<Fact-9>
+CLIPS> (assert (signos-sintomas (enfermedad "hipertension") 
+                          (signos "dolor de cabeza" "mareos") 
+                          (sintomas "náuseas" "visión borrosa")))
+<Fact-10>
+CLIPS> (assert (signos-sintomas (enfermedad "osteoporosis") 
+                          (signos "fracturas" "dolor óseo") 
+                          (sintomas "debilidad muscular" "encorvamiento espinal")))
+<Fact-11>
+CLIPS> (assert (signos-sintomas (enfermedad "Alzheimer") 
+                          (signos "pérdida de memoria" "confusión") 
+                          (sintomas "dificultad para recordar" "cambios de humor")))
+<Fact-12>
+CLIPS> (assert (signos-sintomas (enfermedad "depresion") 
+                          (signos "tristeza" "cansancio") 
+                          (sintomas "pérdida de interés" "dificultades para dormir")))
+<Fact-13>
+CLIPS> (facts)
+f-1     (enfermedad diabetes)
+f-2     (enfermedad anemia)
+f-3     (enfermedad hipertension)
+f-4     (enfermedad osteoporosis)
+f-5     (enfermedad Alzheimer)
+f-6     (enfermedad depresion)
+f-7     (diabetes sed excesiva visión borrosa aumento_orina fatiga)
+f-8     (signos-sintomas (enfermedad "diabetes") (signos "sed excesiva" "visión borrosa") (sintomas "aumento_orina" "fatiga"))
+f-9     (signos-sintomas (enfermedad "anemia") (signos "debilidad" "palidez") (sintomas "fatiga" "mareo"))
+f-10    (signos-sintomas (enfermedad "hipertension") (signos "dolor de cabeza" "mareos") (sintomas "náuseas" "visión borrosa"))
+f-11    (signos-sintomas (enfermedad "osteoporosis") (signos "fracturas" "dolor óseo") (sintomas "debilidad muscular" "encorvamiento espinal"))
+f-12    (signos-sintomas (enfermedad "Alzheimer") (signos "pérdida de memoria" "confusión") (sintomas "dificultad para recordar" "cambios de humor"))
+f-13    (signos-sintomas (enfermedad "depresion") (signos "tristeza" "cansancio") (sintomas "pérdida de interés" "dificultades para dormir"))
+For a total of 13 facts.
