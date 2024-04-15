@@ -1,12 +1,17 @@
-(assert(enfermedad diabetes))
-(assert(enfermedad anemia))
-(assert(enfermedad hipertension))
-(assert(enfermedad osteoporosis))
-(assert(enfermedad Alzheimer))
-(assert(enfermedad depresion))
-
-(facts)
-
+CLIPS (6.4.1 4/8/23)
+CLIPS>  (assert(enfermedad diabetes))
+<Fact-1>
+CLIPS> (assert(enfermedad anemia))
+<Fact-2>
+CLIPS>  (assert(enfermedad hipertension))
+<Fact-3>
+CLIPS>  (assert(enfermedad osteoporosis))
+<Fact-4>
+CLIPS> (assert(enfermedad Alzheimer))
+<Fact-5>
+CLIPS> (assert(enfermedad depresion))
+<Fact-6>
+CLIPS>  (facts)
 f-1     (enfermedad diabetes)
 f-2     (enfermedad anemia)
 f-3     (enfermedad hipertension)
@@ -14,61 +19,111 @@ f-4     (enfermedad osteoporosis)
 f-5     (enfermedad Alzheimer)
 f-6     (enfermedad depresion)
 For a total of 6 facts.
-
-(defrule enfermedades(enfermedad ?e) => (printout t ?e crlf))
-
-CLIPS> (run)
-
+CLIPS> (defrule enfermedades(enfermedad ?e) => (printout t ?e crlf))
+CLIPS>  (run)
 depresion
 Alzheimer
 osteoporosis
 hipertension
 anemia
 diabetes
-
-(deftemplate signos-sintomas
+CLIPS> (deftemplate signos-sintomas
   (slot enfermedad)
   (multislot signos)
   (multislot sintomas)
 )
-
- (assert (signos-sintomas (enfermedad "diabetes") 
+CLIPS> (assert (signos-sintomas (enfermedad "diabetes") 
                           (signos "sed excesiva" "visión borrosa") 
                           (sintomas "aumento_orina" "fatiga")))
-
-<Fact-8>
+<Fact-7>
 CLIPS> (assert (signos-sintomas (enfermedad "anemia") 
                           (signos "debilidad" "palidez") 
                           (sintomas "fatiga" "mareo")))
-<Fact-9>
+<Fact-8>
 CLIPS> (assert (signos-sintomas (enfermedad "hipertension") 
                           (signos "dolor de cabeza" "mareos") 
                           (sintomas "náuseas" "visión borrosa")))
-<Fact-10>
+<Fact-9>
 CLIPS> (assert (signos-sintomas (enfermedad "osteoporosis") 
                           (signos "fracturas" "dolor óseo") 
                           (sintomas "debilidad muscular" "encorvamiento espinal")))
-<Fact-11>
-CLIPS> (assert (signos-sintomas (enfermedad "Alzheimer") 
+
+<Fact-10>
+CLIPS>  (assert (signos-sintomas (enfermedad "Alzheimer") 
                           (signos "pérdida de memoria" "confusión") 
                           (sintomas "dificultad para recordar" "cambios de humor")))
-<Fact-12>
-CLIPS> (assert (signos-sintomas (enfermedad "depresion") 
+<Fact-11>
+CLIPS>  (assert (signos-sintomas (enfermedad "depresion") 
                           (signos "tristeza" "cansancio") 
                           (sintomas "pérdida de interés" "dificultades para dormir")))
-<Fact-13>
-CLIPS> (facts)
+<Fact-12>
+CLIPS>  (facts)
 f-1     (enfermedad diabetes)
 f-2     (enfermedad anemia)
 f-3     (enfermedad hipertension)
 f-4     (enfermedad osteoporosis)
 f-5     (enfermedad Alzheimer)
 f-6     (enfermedad depresion)
-f-7     (diabetes sed excesiva visión borrosa aumento_orina fatiga)
-f-8     (signos-sintomas (enfermedad "diabetes") (signos "sed excesiva" "visión borrosa") (sintomas "aumento_orina" "fatiga"))
-f-9     (signos-sintomas (enfermedad "anemia") (signos "debilidad" "palidez") (sintomas "fatiga" "mareo"))
-f-10    (signos-sintomas (enfermedad "hipertension") (signos "dolor de cabeza" "mareos") (sintomas "náuseas" "visión borrosa"))
-f-11    (signos-sintomas (enfermedad "osteoporosis") (signos "fracturas" "dolor óseo") (sintomas "debilidad muscular" "encorvamiento espinal"))
-f-12    (signos-sintomas (enfermedad "Alzheimer") (signos "pérdida de memoria" "confusión") (sintomas "dificultad para recordar" "cambios de humor"))
-f-13    (signos-sintomas (enfermedad "depresion") (signos "tristeza" "cansancio") (sintomas "pérdida de interés" "dificultades para dormir"))
-For a total of 13 facts.
+f-7     (signos-sintomas (enfermedad "diabetes") (signos "sed excesiva" "visión borrosa") (sintomas "aumento_orina" "fatiga"))
+f-8     (signos-sintomas (enfermedad "anemia") (signos "debilidad" "palidez") (sintomas "fatiga" "mareo"))
+f-9     (signos-sintomas (enfermedad "hipertension") (signos "dolor de cabeza" "mareos") (sintomas "náuseas" "visión borrosa"))
+f-10    (signos-sintomas (enfermedad "osteoporosis") (signos "fracturas" "dolor óseo") (sintomas "debilidad muscular" "encorvamiento espinal"))
+f-11    (signos-sintomas (enfermedad "Alzheimer") (signos "pérdida de memoria" "confusión") (sintomas "dificultad para recordar" "cambios de humor"))
+f-12    (signos-sintomas (enfermedad "depresion") (signos "tristeza" "cansancio") (sintomas "pérdida de interés" "dificultades para dormir"))
+For a total of 12 facts.
+CLIPS> (defrule consultar-enfermedades
+  (enfermedad ?e)
+  =>
+  (printout t ?e crlf)
+)
+
+CLIPS> (defrule consultar-signos
+  (signos-sintomas (enfermedad ?enfermedad) (signos $?signos))
+  =>
+  (printout t "Signos de " ?enfermedad ": " (implode$ ?signos) crlf)
+)
+
+CLIPS> (defrule consultar-sintomas
+  (signos-sintomas (enfermedad ?enfermedad) (sintomas $?sintomas))
+  =>
+  (printout t "Síntomas de " ?enfermedad ": " (implode$ ?sintomas) crlf)
+)
+
+CLIPS> (run)
+
+Síntomas de diabetes: "aumento_orina" "fatiga"
+Síntomas de anemia: "fatiga" "mareo"
+Síntomas de hipertension: "náuseas" "visión borrosa"
+Síntomas de osteoporosis: "debilidad muscular" "encorvamiento espinal"
+Síntomas de Alzheimer: "dificultad para recordar" "cambios de humor"
+Síntomas de depresion: "pérdida de interés" "dificultades para dormir"
+Signos de depresion: "tristeza" "cansancio"
+Signos de Alzheimer: "pérdida de memoria" "confusión"
+Signos de osteoporosis: "fracturas" "dolor óseo"
+Signos de hipertension: "dolor de cabeza" "mareos"
+Signos de anemia: "debilidad" "palidez"
+Signos de diabetes: "sed excesiva" "visión borrosa"
+diabetes
+anemia
+hipertension
+osteoporosis
+Alzheimer
+depresion
+CLIPS>(defrule eliminar-enfermedad
+  ?fact <- (enfermedad ?enfermedad)
+  =>
+  (printout t "Eliminando enfermedad: " ?enfermedad crlf)
+  (retract ?fact)
+)
+
+(run)
+
+(facts)
+
+(run)
+Eliminando enfermedad: depresion
+Eliminando enfermedad: Alzheimer
+Eliminando enfermedad: osteoporosis
+Eliminando enfermedad: hipertension
+Eliminando enfermedad: anemia
+Eliminando enfermedad: diabetes
